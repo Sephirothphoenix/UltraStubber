@@ -1,5 +1,7 @@
 local mod = get_mod("UltraStubber")
 
+
+
 --[[
 Mod: Ultra Stubber
 Description: Changes the Heavy Stubber for Ogryn to shoot lasers and plasma shots on crits. Does NOT affect gameplay, this is purely cosmetic!
@@ -10,6 +12,9 @@ Author: Seph, a.k.a. Concoction of Constitution
 -- Hook into weapon sounds and modify the heavy stubber to play lasgun/plasma audio.
 -- Source: 
 --      https://github.com/Aussiemon/Darktide-Source-Code/blob/4cd2fae4d6d248cb76751e7e4df386abaf8f2b62/scripts/settings/sound/player_character_sound_event_aliases.lua
+
+
+
 
 mod:hook_require("scripts/settings/sound/player_character_sound_event_aliases", function(events)
     --"Ranged Shooting" is a looping sound event. This can only be properly replaced with another looping sound (I.e. Autogun sounds)
@@ -97,10 +102,9 @@ mod:hook_require("scripts/settings/effects/player_line_effects", function(line_e
         line_effects.heavy_stubber_bullet.emitters_crit.interval.distance = 2
         line_effects.heavy_stubber_bullet.emitters_crit.interval.increase = 0
     end
+end)
 
-    end)
-
-
+-- Scale size and intensity of shots with blessings that stack, such as Blaze Away.
 local prevStep = 0
 local LineEffects = require("scripts/settings/effects/player_line_effects")
 mod:hook("SteppedStatBuff", "stat_buff_stacking_count", function(original_func, ...)
