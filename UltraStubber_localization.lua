@@ -19,9 +19,9 @@ return {
 		["zh-cn"] = "允许尺寸缩放",
 		ru = "Разрешить масштабирование размера.",
 	},
-	allow_plasma_crits = {
+	--[[allow_plasma_crits = {
 		en = "Allow Plasma Crits",
 		["zh-cn"] = "允许等离子爆击",
 		ru = "Разрешить критические попадания плазмой.",
-	},
+	},]]
 }

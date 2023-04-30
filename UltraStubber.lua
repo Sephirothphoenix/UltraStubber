@@ -4,12 +4,11 @@ local mod = get_mod("UltraStubber")
 
 --[[
 Mod: Ultra Stubber
-Description: Changes the Heavy Stubber for Ogryn to shoot lasers and plasma shots on crits. Does NOT affect gameplay, this is purely cosmetic!
-            Note that only those who have the mod will see this in action. Other unmodded players will not see this.
+Description: Changes the Heavy Stubber for Ogryn to shoot lasers. Does NOT affect gameplay, this is purely cosmetic!
 Author: Seph, a.k.a. Concoction of Constitution
 ]]
 
--- Hook into weapon sounds and modify the heavy stubber to play lasgun/plasma audio.
+-- Hook into weapon sounds and modify the heavy stubber to play lasgun audio.
 -- Source: 
 --      https://github.com/Aussiemon/Darktide-Source-Code/blob/4cd2fae4d6d248cb76751e7e4df386abaf8f2b62/scripts/settings/sound/player_character_sound_event_aliases.lua
 
@@ -43,15 +42,15 @@ mod:hook_require("scripts/settings/sound/player_character_sound_event_aliases", 
     -- Critical shot is, you guessed it, the sound it makes when you fire a critical shot.
     -- As the stubber by default does not have its own critical shot sound, I just made a reference to it anyways.
     -- Replaceable with any non-looping sound event.
-    if mod:get("allow_plasma_crits") then
+    --[[if mod:get("allow_plasma_crits") then
         events.critical_shot_extra.events.ogryn_heavystubber_p1_m1 = "wwise/events/weapon/play_weapon_plasmagun_charged"
         events.critical_shot_extra.events.ogryn_heavystubber_p1_m2 = "wwise/events/weapon/play_weapon_plasmagun_charged"
         events.critical_shot_extra.events.ogryn_heavystubber_p1_m3 = "wwise/events/weapon/play_weapon_plasmagun_charged"
-    else
-        events.critical_shot_extra.events.ogryn_heavystubber_p1_m1 = "wwise/events/weapon/play_indicator_crit"
-        events.critical_shot_extra.events.ogryn_heavystubber_p1_m2 = "wwise/events/weapon/play_indicator_crit"
-        events.critical_shot_extra.events.ogryn_heavystubber_p1_m3 = "wwise/events/weapon/play_indicator_crit"
-    end
+    else]]
+    events.critical_shot_extra.events.ogryn_heavystubber_p1_m1 = "wwise/events/weapon/play_indicator_crit"
+    events.critical_shot_extra.events.ogryn_heavystubber_p1_m2 = "wwise/events/weapon/play_indicator_crit"
+    events.critical_shot_extra.events.ogryn_heavystubber_p1_m3 = "wwise/events/weapon/play_indicator_crit"
+    --end
 end)
 
 -- Todo: Make laser size scale with Blaze Away buff.
@@ -74,13 +73,13 @@ mod:hook_require("scripts/settings/effects/player_line_effects", function(line_e
     -- Replaceable with other line effect vfx found in the source above.
     line_effects.heavy_stubber_bullet.vfx = "content/fx/particles/weapons/rifles/lasgun/lasgun_beam"
     -- The size of the "bullet". Default stubber bullet size is around 0.1
-    line_effects.heavy_stubber_bullet.vfx_width = 1
+    line_effects.heavy_stubber_bullet.vfx_width = 0.25
     -- Visual effect, but for a critical shot.
-    if mod:get("allow_plasma_crits") then
-        line_effects.heavy_stubber_bullet.vfx_crit = "content/fx/particles/weapons/rifles/plasma_gun/plasma_beam"
-    else
-        line_effects.heavy_stubber_bullet.vfx_crit = "content/fx/particles/weapons/rifles/lasgun/lasgun_beam_crit"
-    end
+    --if mod:get("allow_plasma_crits") then
+    --    line_effects.heavy_stubber_bullet.vfx_crit = "content/fx/particles/weapons/rifles/plasma_gun/plasma_beam"
+    --else
+    line_effects.heavy_stubber_bullet.vfx_crit = "content/fx/particles/weapons/rifles/lasgun/lasgun_beam_crit"
+    --end
     -- This is the visual effect accompanies the shot itself. E.g. the electrical crackle of the laser, the smoke from a plasma shot, tracer rounds, etc.
     line_effects.heavy_stubber_bullet.emitters.vfx.default = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
     line_effects.heavy_stubber_bullet.emitters.vfx.start = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
@@ -89,19 +88,19 @@ mod:hook_require("scripts/settings/effects/player_line_effects", function(line_e
     line_effects.heavy_stubber_bullet.emitters.interval.distance = 7
     -- Distance offset between emitter effects. Default 0.
     line_effects.heavy_stubber_bullet.emitters.interval.increase = 0
-
+    --[[
     if mod:get("allow_plasma_crits") then
         -- Same thing as above, just for crits.
         line_effects.heavy_stubber_bullet.emitters_crit.vfx.default = "content/fx/particles/weapons/rifles/plasma_gun/plasma_beam_linger"
         line_effects.heavy_stubber_bullet.emitters_crit.vfx.start = "content/fx/particles/weapons/rifles/plasma_gun/plasma_beam_linger"
         line_effects.heavy_stubber_bullet.emitters_crit.interval.distance = 5
         line_effects.heavy_stubber_bullet.emitters_crit.interval.increase = 0
-    else
-        line_effects.heavy_stubber_bullet.emitters_crit.vfx.default = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
-        line_effects.heavy_stubber_bullet.emitters_crit.vfx.start = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
-        line_effects.heavy_stubber_bullet.emitters_crit.interval.distance = 2
-        line_effects.heavy_stubber_bullet.emitters_crit.interval.increase = 0
-    end
+    else]]
+    line_effects.heavy_stubber_bullet.emitters_crit.vfx.default = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
+    line_effects.heavy_stubber_bullet.emitters_crit.vfx.start = "content/fx/particles/weapons/rifles/lasgun/lasgun_crit_trail"
+    line_effects.heavy_stubber_bullet.emitters_crit.interval.distance = 4
+    line_effects.heavy_stubber_bullet.emitters_crit.interval.increase = 0
+    --end
 end)
 
 -- Scale size and intensity of shots with blessings that stack, such as Blaze Away.
@@ -112,14 +111,14 @@ mod:hook("SteppedStatBuff", "stat_buff_stacking_count", function(original_func, 
     if prevStep ~= step and mod:get("allow_size_scaling") then
         --mod:echo(LineEffects.heavy_stubber_bullet.vfx_width)
         if step == 0 then
-            LineEffects.heavy_stubber_bullet.vfx_width = 0.5
+            LineEffects.heavy_stubber_bullet.vfx_width = 0.25
             LineEffects.heavy_stubber_bullet.emitters.interval.distance = 7
         elseif step > 3 then
-            LineEffects.heavy_stubber_bullet.vfx_width = 3
-            LineEffects.heavy_stubber_bullet.emitters.interval.distance = 1
-        elseif step > 1 then
             LineEffects.heavy_stubber_bullet.vfx_width = 1
             LineEffects.heavy_stubber_bullet.emitters.interval.distance = 4
+        elseif step > 1 then
+            LineEffects.heavy_stubber_bullet.vfx_width = 0.5
+            LineEffects.heavy_stubber_bullet.emitters.interval.distance = 6
         end
     end
     prevStep = step

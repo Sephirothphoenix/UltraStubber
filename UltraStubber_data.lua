@@ -10,11 +10,11 @@ local widgets = {
 				type = "checkbox",
 				default_value = true,
 			},
-			{
+			--[[{
 				setting_id = "allow_plasma_crits",
 				type = "checkbox",
 				default_value = true,
-			},
+			},]]
 		},
 	},
 }
